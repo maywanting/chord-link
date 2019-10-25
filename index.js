@@ -117,7 +117,7 @@ let dataset2 = {
     "weight": [3, 2, 5],
     "relationship": [
         [0, 3, 8, 8, 0],
-        [0, 0, 4, 0, 1],
+        [1, 1, 4, 0, 1],
         [0, 0, 5, 2, 0],
     ]
 };
@@ -139,27 +139,34 @@ let input = chord2[1];
 
 let A1 = transPosition(100, output.endAngle, dataset1.x, dataset1.y);
 let B1 = transPosition(100, output.startAngle, dataset1.x, dataset1.y);
-let D1 = transPosition(100, (output.startAngle + output.endAngle) / 2.0, dataset1.x, dataset1.y);
-let C1 = transPosition(100 * 2, (output.startAngle + output.endAngle) / 2.0, dataset1.x, dataset1.y);
-let C2 = calculateArcP(A1.x, A1.y, D1.x, D1.y, C1.x, C1.y);
-let C3 = calculateArcP(B1.x, B1.y, D1.x, D1.y, C1.x, C1.y);
+let C1 = transPosition(100, (output.startAngle + output.endAngle) / 2.0, dataset1.x, dataset1.y);
+let D1 = transPosition(100 * 1.5, (output.startAngle + output.endAngle) / 2.0, dataset1.x, dataset1.y);
+
+let C2 = transPosition(100, ( input.startAngle + input.endAngle) / 2.0, dataset2.x, dataset2.y);
+let D2 = transPosition(100 * 1.5,  ( input.startAngle + input.endAngle) / 2.0, dataset2.x, dataset2.y);
+
+let MC1 = "M" + C1.x + "," + C1.y;
+let CC1C2 = " C" + D1.x + "," + D1.y + "," + D2.x + "," + D2.y + "," + C2.x + "," + C2.y;
+let path = MC1 + CC1C2;
+// let C2 = calculateArcP(A1.x, A1.y, D1.x, D1.y, C1.x, C1.y);
+// let C3 = calculateArcP(B1.x, B1.y, D1.x, D1.y, C1.x, C1.y);
 
 
-let A2 = transPosition(100 * 1.1, input.endAngle, dataset2.x, dataset2.y);
-let B2 = transPosition(100 * 1.1, input.startAngle, dataset2.x, dataset2.y);
-let D2 = transPosition(100, ( input.startAngle + input.endAngle) / 2.0, dataset2.x, dataset2.y);
-let E1 = transPosition(100 * 2,  ( input.startAngle + input.endAngle) / 2.0, dataset2.x, dataset2.y);
-let E2 = calculateArcP(A2.x, A2.y, D2.x, D2.y, E1.x, E1.y);
-let E3 = calculateArcP(B2.x, B2.y, D2.x, D2.y, E1.x, E1.y);
+// let A2 = transPosition(100 * 1.1, input.endAngle, dataset2.x, dataset2.y);
+// let B2 = transPosition(100 * 1.1, input.startAngle, dataset2.x, dataset2.y);
+// let D2 = transPosition(100, ( input.startAngle + input.endAngle) / 2.0, dataset2.x, dataset2.y);
+// let E1 = transPosition(100 * 2,  ( input.startAngle + input.endAngle) / 2.0, dataset2.x, dataset2.y);
+// let E2 = calculateArcP(A2.x, A2.y, D2.x, D2.y, E1.x, E1.y);
+// let E3 = calculateArcP(B2.x, B2.y, D2.x, D2.y, E1.x, E1.y);
 
-let MA1 = "M" + A1.x + "," + A1.y;
-let CA1A2 = " C" + C2.x + "," + C2.y + "," + E2.x + "," + E2.y + "," + A2.x + "," + A2.y;
-let LA2D2 = " L" + D2.x + "," + D2.y;
-let LD2B2 = " L" + B2.x + "," + B2.y;
-let CB2B1 = " C" + E3.x + "," + E3.y + "," + C3.x + "," + C3.y + "," + B1.x + "," + B2.y;
-let AB1A1 = " L" + A1.x + "," + A1.y;
-// let AB1A1 = " A100,100,0,0,1," + A1.x + "," + A1.y;
+// let MA1 = "M" + A1.x + "," + A1.y;
+// let CA1A2 = " C" + C2.x + "," + C2.y + "," + E2.x + "," + E2.y + "," + A2.x + "," + A2.y;
+// let LA2D2 = " L" + D2.x + "," + D2.y;
+// let LD2B2 = " L" + B2.x + "," + B2.y;
+// let CB2B1 = " C" + E3.x + "," + E3.y + "," + C3.x + "," + C3.y + "," + B1.x + "," + B2.y;
+// let AB1A1 = " L" + A1.x + "," + A1.y;
+// // let AB1A1 = " A100,100,0,0,1," + A1.x + "," + A1.y;
 
-let path = MA1 + CA1A2 + LA2D2 + LD2B2 + CB2B1 + AB1A1;
+// let path = MA1 + CA1A2 + LA2D2 + LD2B2 + CB2B1 + AB1A1;
 link1.append("g").attr("class", "link")
-    .append("path").attr("d", path).attr("fill", "green");
+    .append("path").attr("d", path).attr("stroke", "green"). attr("fill", "none");
