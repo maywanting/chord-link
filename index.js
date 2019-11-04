@@ -134,39 +134,59 @@ function calculateArcP (x1, y1, x2, y2, x3, y3) {
 //chord1[0] -> chord2[1];
 let link1 = svg.append("g");
 
-let output = chord1[3];
-let input = chord2[1];
 
-let A1 = transPosition(100, output.endAngle, dataset1.x, dataset1.y);
-let B1 = transPosition(100, output.startAngle, dataset1.x, dataset1.y);
-let C1 = transPosition(100, (output.startAngle + output.endAngle) / 2.0, dataset1.x, dataset1.y);
-let D1 = transPosition(100 * 1.5, (output.startAngle + output.endAngle) / 2.0, dataset1.x, dataset1.y);
+function drawArraw (output, input, Ox, Oy, Ix, Iy) {
+    let outputSA = output.startAngle;
+    let outputEA = (output.startAngle + output.endAngle) / 2;
+    let inputSA = (input.startAngle + input.endAngle) / 2;
+    let inputEA = input.endAngle;
 
-let C2 = transPosition(100, ( input.startAngle + input.endAngle) / 2.0, dataset2.x, dataset2.y);
-let D2 = transPosition(100 * 1.5,  ( input.startAngle + input.endAngle) / 2.0, dataset2.x, dataset2.y);
+    // let A1 = transPosition(100, output.endAngle, dataset1.x, dataset1.y);
+    // let B1 = transPosition(100, output.startAngle, dataset1.x, dataset1.y);
+    let C1 = transPosition(100, (outputSA + outputEA) / 2.0, Ox, Oy);
+    // let D1 = transPosition(100 * 1.5, (output.startAngle + output.endAngle) / 2.0, dataset1.x, dataset1.y);
 
-let MC1 = "M" + C1.x + "," + C1.y;
-let CC1C2 = " C" + D1.x + "," + D1.y + "," + D2.x + "," + D2.y + "," + C2.x + "," + C2.y;
-let path = MC1 + CC1C2;
-// let C2 = calculateArcP(A1.x, A1.y, D1.x, D1.y, C1.x, C1.y);
-// let C3 = calculateArcP(B1.x, B1.y, D1.x, D1.y, C1.x, C1.y);
+    let C2 = transPosition(100, ( inputSA + inputEA) / 2.0, Ix, Iy);
+
+    // let Xc = 0.5 * (C1.x + C2.x) - 0.2 * (C1.x - C2.x) ;
+    // let Yc = 0.5 * (C1.y + C2.y) - 0.2 * (C1.y - C2.y) ;
+    let Xc = 0.5 * (C1.x + C2.x) + 0.3 * (C2.y - C1.y) ;
+    let Yc = 0.5 * (C1.y + C2.y) + 0.3 * (C2.x - C1.x) ;
+
+    let MC1 = "M" + C1.x + "," + C1.y;
+    let CC1C2 = " Q" + Xc + "," + Yc + "," + C2.x + "," + C2.y;
+    // let LC1C = " L" + Xc + "," + Yc;
+    // let LCC2 = " L" + C2.x + "," + C2.y;
+    let path = MC1 + CC1C2;
+    // let D2 = transPosition(100 * 1.5,  ( input.startAngle + input.endAngle) / 2.0, dataset2.x, dataset2.y);
+
+    // let MC1 = "M" + C1.x + "," + C1.y;
+    // let CC1C2 = " C" + D1.x + "," + D1.y + "," + D2.x + "," + D2.y + "," + C2.x + "," + C2.y;
+    // let path = MC1 + CC1C2;
+
+    // let C2 = calculateArcP(A1.x, A1.y, D1.x, D1.y, C1.x, C1.y);
+    // let C3 = calculateArcP(B1.x, B1.y, D1.x, D1.y, C1.x, C1.y);
 
 
-// let A2 = transPosition(100 * 1.1, input.endAngle, dataset2.x, dataset2.y);
-// let B2 = transPosition(100 * 1.1, input.startAngle, dataset2.x, dataset2.y);
-// let D2 = transPosition(100, ( input.startAngle + input.endAngle) / 2.0, dataset2.x, dataset2.y);
-// let E1 = transPosition(100 * 2,  ( input.startAngle + input.endAngle) / 2.0, dataset2.x, dataset2.y);
-// let E2 = calculateArcP(A2.x, A2.y, D2.x, D2.y, E1.x, E1.y);
-// let E3 = calculateArcP(B2.x, B2.y, D2.x, D2.y, E1.x, E1.y);
+    // let A2 = transPosition(100 * 1.1, input.endAngle, dataset2.x, dataset2.y);
+    // let B2 = transPosition(100 * 1.1, input.startAngle, dataset2.x, dataset2.y);
+    // let D2 = transPosition(100, ( input.startAngle + input.endAngle) / 2.0, dataset2.x, dataset2.y);
+    // let E1 = transPosition(100 * 2,  ( input.startAngle + input.endAngle) / 2.0, dataset2.x, dataset2.y);
+    // let E2 = calculateArcP(A2.x, A2.y, D2.x, D2.y, E1.x, E1.y);
+    // let E3 = calculateArcP(B2.x, B2.y, D2.x, D2.y, E1.x, E1.y);
 
-// let MA1 = "M" + A1.x + "," + A1.y;
-// let CA1A2 = " C" + C2.x + "," + C2.y + "," + E2.x + "," + E2.y + "," + A2.x + "," + A2.y;
-// let LA2D2 = " L" + D2.x + "," + D2.y;
-// let LD2B2 = " L" + B2.x + "," + B2.y;
-// let CB2B1 = " C" + E3.x + "," + E3.y + "," + C3.x + "," + C3.y + "," + B1.x + "," + B2.y;
-// let AB1A1 = " L" + A1.x + "," + A1.y;
-// // let AB1A1 = " A100,100,0,0,1," + A1.x + "," + A1.y;
+    // let MA1 = "M" + A1.x + "," + A1.y;
+    // let CA1A2 = " C" + C2.x + "," + C2.y + "," + E2.x + "," + E2.y + "," + A2.x + "," + A2.y;
+    // let LA2D2 = " L" + D2.x + "," + D2.y;
+    // let LD2B2 = " L" + B2.x + "," + B2.y;
+    // let CB2B1 = " C" + E3.x + "," + E3.y + "," + C3.x + "," + C3.y + "," + B1.x + "," + B2.y;
+    // let AB1A1 = " L" + A1.x + "," + A1.y;
+    // // let AB1A1 = " A100,100,0,0,1," + A1.x + "," + A1.y;
 
-// let path = MA1 + CA1A2 + LA2D2 + LD2B2 + CB2B1 + AB1A1;
-link1.append("g").attr("class", "link")
-    .append("path").attr("d", path).attr("stroke", "green"). attr("fill", "none");
+    // let path = MA1 + CA1A2 + LA2D2 + LD2B2 + CB2B1 + AB1A1;
+    link1.append("g").attr("class", "link")
+        .append("path").attr("d", path).attr("stroke", "green").attr("fill", "none").attr("stroke-width", 8);
+}
+
+drawArraw (chord1[3], chord2[1], dataset1.x, dataset1.y, dataset2.x, dataset2.y);
+drawArraw (chord2[1], chord1[3], dataset2.x, dataset2.y, dataset1.x, dataset1.y);
