@@ -26,6 +26,10 @@ function drawPath(output, input, group) {
     group.append("g").attr("class", "transition")
         .append("path").attr("d", pathDetail).attr("fill", "blue");
 }
+
+function drawPoint(group, x, y) {
+    group.append("circle").attr("cx", x).attr("cy", y).attr("r", 5).attr("fill", "red");
+}
 function createChord(dataset) {
     //block分配
     let arc = d3.svg.arc()
@@ -126,9 +130,10 @@ let chord2 = createChord(dataset2);
 
 console.log(chord1);
 
+// x1, x2 link node, x3 opposite node
 function calculateArcP (x1, y1, x2, y2, x3, y3) {
-    let x = x1 + x3 - x2;
-    let y = y1 + y3 - y2;
+    let x = x1 + x2 - x3;
+    let y = y1 + y2 - y3;
     return {"x": x, "y": y};
 }
 //chord1[0] -> chord2[1];
@@ -143,21 +148,45 @@ function drawArraw (output, input, Ox, Oy, Ix, Iy) {
 
     // let A1 = transPosition(100, output.endAngle, dataset1.x, dataset1.y);
     // let B1 = transPosition(100, output.startAngle, dataset1.x, dataset1.y);
+    let OutputS = transPosition(100, outputSA, Ox, Oy);
+    let OutputE = transPosition(100, outputEA, Ox, Oy);
+    let InputS = transPosition(100*1.1, inputSA, Ix, Iy);
+    let InputE = transPosition(100*1.1, inputEA, Ix, Iy);
+
     let C1 = transPosition(100, (outputSA + outputEA) / 2.0, Ox, Oy);
     // let D1 = transPosition(100 * 1.5, (output.startAngle + output.endAngle) / 2.0, dataset1.x, dataset1.y);
 
     let C2 = transPosition(100, ( inputSA + inputEA) / 2.0, Ix, Iy);
 
-    // let Xc = 0.5 * (C1.x + C2.x) - 0.2 * (C1.x - C2.x) ;
-    // let Yc = 0.5 * (C1.y + C2.y) - 0.2 * (C1.y - C2.y) ;
     let Xc = 0.5 * (C1.x + C2.x) + 0.3 * (C2.y - C1.y) ;
     let Yc = 0.5 * (C1.y + C2.y) + 0.3 * (C2.x - C1.x) ;
 
-    let MC1 = "M" + C1.x + "," + C1.y;
-    let CC1C2 = " Q" + Xc + "," + Yc + "," + C2.x + "," + C2.y;
+    let XY1 = calculateArcP(OutputS.x, OutputS.y, Xc, Yc, C1.x, C1.y);
+    let XY2 = calculateArcP(OutputE.x, OutputE.y, Xc, Yc, C1.x, C1.y);
+
+    drawPoint(link1, Xc, Yc);
+    drawPoint(link1, XY1.x, XY1.y);
+    drawPoint(link1, XY2.x, XY2.y);
+
+    let MOS = "M" + OutputS.x + "," + OutputS.y;
+    let QOS_IE = " Q" + XY1.x + "," + XY1.y + "," + InputE.x + "," + InputE.y;
+    let LIE_C2 = " L" + C2.x + "," + C2.y;
+    let LC2_IS = " L" + InputS.x + "," + InputS.y;
+    // let AIE_IS = " A100,100,0,0,0," + InputS.x + "," + InputS.y;
+    // let LIA_IS = " L" + InputS.x + "," + InputS.y;
+    let QIS_OE = " Q" + XY2.x + "," + XY2.y + "," + OutputE.x + "," + OutputE.y;
+    let AOE_OS = " A100,100,0,0,0," + OutputS.x + "," + OutputS.y;
+    let path = MOS + QOS_IE + LIE_C2 + LC2_IS + QIS_OE + AOE_OS;
+
+
+
+    // let E2 = calculateArcP(A2.x, A2.y, D2.x, D2.y, E1.x, E1.y);
+
+    // let MC1 = "M" + C1.x + "," + C1.y;
+    // let CC1C2 = " Q" + Xc + "," + Yc + "," + C2.x + "," + C2.y;
     // let LC1C = " L" + Xc + "," + Yc;
     // let LCC2 = " L" + C2.x + "," + C2.y;
-    let path = MC1 + CC1C2;
+    // let path = MC1 + CC1C2;
     // let D2 = transPosition(100 * 1.5,  ( input.startAngle + input.endAngle) / 2.0, dataset2.x, dataset2.y);
 
     // let MC1 = "M" + C1.x + "," + C1.y;
@@ -185,7 +214,7 @@ function drawArraw (output, input, Ox, Oy, Ix, Iy) {
 
     // let path = MA1 + CA1A2 + LA2D2 + LD2B2 + CB2B1 + AB1A1;
     link1.append("g").attr("class", "link")
-        .append("path").attr("d", path).attr("stroke", "green").attr("fill", "none").attr("stroke-width", 8);
+        .append("path").attr("d", path).attr("fill", "green");
 }
 
 drawArraw (chord1[3], chord2[1], dataset1.x, dataset1.y, dataset2.x, dataset2.y);
