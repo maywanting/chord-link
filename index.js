@@ -169,15 +169,21 @@ function drawArraw (output, input, Ox, Oy, Ix, Iy) {
     drawPoint(link1, XY2.x, XY2.y);
 
     let MOS = "M" + OutputS.x + "," + OutputS.y;
-    let QOS_IE = " Q" + XY1.x + "," + XY1.y + "," + InputE.x + "," + InputE.y;
-    let LIE_C2 = " L" + C2.x + "," + C2.y;
-    let LC2_IS = " L" + InputS.x + "," + InputS.y;
+    let LOS_C2 = " L" + C2.x + "," + C2.y;
+    let LC2_OE = " L" + OutputE.x + "," + OutputE.y;
+    // let QOS_C2 = " Q" + XY1.x + "," + XY1.y + "," + C2.x + "," + C2.y;
+    // let QC2_OE = " Q" + XY2.x + "," + XY2.y + "," + OutputE.x + "," + OutputE.y;
+    let AOE_OS = " A100,100,0,0,0," + OutputS.x + "," + OutputS.y;
+    // let QOS_IE = " Q" + XY1.x + "," + XY1.y + "," + InputE.x + "," + InputE.y;
+    // let LIE_C2 = " L" + C2.x + "," + C2.y;
+    // let LC2_IS = " L" + InputS.x + "," + InputS.y;
     // let AIE_IS = " A100,100,0,0,0," + InputS.x + "," + InputS.y;
     // let LIA_IS = " L" + InputS.x + "," + InputS.y;
-    let QIS_OE = " Q" + XY2.x + "," + XY2.y + "," + OutputE.x + "," + OutputE.y;
-    let AOE_OS = " A100,100,0,0,0," + OutputS.x + "," + OutputS.y;
-    let path = MOS + QOS_IE + LIE_C2 + LC2_IS + QIS_OE + AOE_OS;
+    // let QIS_OE = " Q" + XY2.x + "," + XY2.y + "," + OutputE.x + "," + OutputE.y;
+    // let AOE_OS = " A100,100,0,0,0," + OutputS.x + "," + OutputS.y;
+    // let path = MOS + QOS_IE + LIE_C2 + LC2_IS + QIS_OE + AOE_OS;
 
+    let path = MOS + LOS_C2 + LC2_OE + AOE_OS;
 
 
     // let E2 = calculateArcP(A2.x, A2.y, D2.x, D2.y, E1.x, E1.y);
